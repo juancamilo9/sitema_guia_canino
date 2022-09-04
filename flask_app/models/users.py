@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 import re
+
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 from flask import jsonify
 
@@ -31,3 +32,27 @@ class User:
             user = cls(result[0])
             return user
 
+    @classmethod
+    def save(cls, data):
+        query = "INSERT INTO users (first_name, last_name, number_phone, email, address, password, rol_id) VALUES (%(first_name)s, %(last_name)s, %(number_phone)s, %(email)s, %(address)s, %(password)s, %(rol)s);"
+        result = connectToMySQL('guia_canino').query_db(query, data)
+        return result
+
+    @classmethod
+    def get_one(cls, data):
+        query = "SELECT * FROM users WHERE id = %(id)s"
+        result = connectToMySQL('guia_canino').query_db(query, data)
+        if len(result) < 1:
+            return False
+        else:
+            user = cls(result[0])
+            return user
+
+    @classmethod
+    def get_all(cls):
+        query = "SELECT * FROM users;"
+        results = connectToMySQL('guia_canino').query_db(query)
+        users = []
+        for user in results:
+            users.append(cls(user))
+        return users

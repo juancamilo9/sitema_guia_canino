@@ -7,30 +7,34 @@
 </head>
 <body>
     <header>
-        <h1>Bienvenido al sistema de Guias Caninos</h1>
+        <h1 class="text text-primary mb-3 text-center">SISTEMA DE GUIAS CANINOS</h1>
     </header>
     <main>
-        <div>
-            <div>
-                <form method="post" action="/login">
-                    <div class="form-group">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+                <div id="alert-login"></div>
+                <form id="form-login" method="post" action="/login">
+                    <div class="form-group mb-3">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email">
+                        <input class="form-control" type="email" name="email" id="email">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="password">Contraseña</label>
-                        <input type="password" name="password" id="password">
+                        <input class="form-control" type="password" name="password" id="password">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <input type="submit" class="btn btn-primary" value="LogIn">
                     </div>
                 </form>
             </div>
-            <div>
-                <p>El sistema de guia canino digital ha sido dieñado para facilitar el control de los paseos matutinos de tu mascota, puede ser utilizado por todas las personas que estan involucradas en el proceso de paseos caninos, Desde el paseador hasta el dueño de la mascota</p>
+            <div class="col mb-3">
+              <p>El sistema de guia canino digital ha sido dieñado para facilitar el control de los paseos matutinos de tu mascota, puede ser utilizado por todas las personas que estan involucradas en el proceso de paseos caninos, Desde el paseador hasta el dueño de la mascota</p>
             </div>
+          </div>
         </div>
     </main>
     <footer></footer>
+    <script src="{{ url_for('static', filename='js/index.js') }}" ></script>
 </body>
 </html>
