@@ -1,8 +1,8 @@
 var formLogin = document.getElementById('form-login'); //Obteniendo el formulario
 
 /* Vamos a escuchar cuando se realice el evento ON SUBMIT */
-formLogin.onsubmit = function (event) {
-    event.preventDefault(); /* Previene el comportamiento por default de mi formulario */
+formLogin.onsubmit = function (evento) {
+    evento.preventDefault(); /* Previene el comportamiento por default de mi formulario */
 
     //Creamos una variable con todos los datos del formulario
     var formulario = new FormData(formLogin);
@@ -19,13 +19,15 @@ formLogin.onsubmit = function (event) {
             console.log(data);
 
             if(data.message === "correcto") {
-                window.location.href = "/dashboard";
+                window.location.href = '/dashboard';
             }
 
             var mensajeAlerta = document.getElementById('alert-login'); //El elemento con identificador mensajeAlerta
-            mensajeAlerta.innerText = data.message;
+            mensajeAlerta.innerHTML = data.message;
             mensajeAlerta.classList.add('alert');
             mensajeAlerta.classList.add('alert-danger');
 
         });
 }
+
+

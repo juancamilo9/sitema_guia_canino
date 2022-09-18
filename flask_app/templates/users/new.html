@@ -1,10 +1,11 @@
 {%extends "base.html"%}
-{%block title%}Gestionar Usuarios {% endblock%}
+{%block title%}Registrar Usuario {% endblock%}
 {%block content%}
 <div class="container">
     <div class="row">
         <div class="col">
-            <form method="post" id="user-register" action="/register">
+            <div id="alertMessage"></div>
+            <form method="post" id="form" action="/register">
                     <div class="form-group mb-3">
                         <label for="first_name">Nombre</label>
                         <input class="form-control" type="text" id="first_name" name="first_name">
@@ -37,7 +38,9 @@
                     <label for="rol">Rol</label>
                     <select class="form-control" id="rol" name="rol">
                         {% for rol in roles  %}
-                        <option value="{{rol.id}}">{{rol.rol}}</option>
+                        {% if rol.id != 1 %}
+                            <option value="{{rol.id}}">{{rol.rol}}</option>
+                        {% endif %}
                         {%endfor%}
                     </select>
                 </div>
@@ -50,3 +53,9 @@
 </div>
 
 {%endblock%}
+{% block footer %}
+{% endblock %}
+{% block scripts %}
+{{super()}}
+<script src="{{ url_for('static', filename='js/validations.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{%extends "base.html"%}
+{%block title%}Ver Info Usuario {% endblock%}
+{%block content%}
+<div class="container">
+    <a href="/users" class="btn btn-dark">Volver</a>
+    <div class="card mt-3">
+        <div class="card-header d-flex justify-content-around">
+            <h3 class="text text-info"> Ver información de {{user_to_edit.first_name}}</h3>
+            <a class="btn btn-warning">Actualizar información</a>
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p><strong>Nombre: </strong>{{user_to_edit.first_name}}</p>
+                <p><strong>Apellido: </strong>{{user_to_edit.last_name}}</p>
+                <p><strong>Número telefonico: </strong>{{user_to_edit.number_phone}}</p>
+                <p><strong>email: </strong>{{user_to_edit.email}}</p>
+                {% for rol in roles%}
+                    {% if rol.id == user_to_edit.rol_id %}
+                       <p><strong>Rol: </strong>{{rol.rol}}</p>
+                    {% endif %}
+                {% endfor %}
+                <p><strong>Direccion: </strong>{{user_to_edit.address}}</p>
+                <p><strong>Fecha de registro en el sistema: </strong>{{user_to_edit.created_at}}</p>
+                <p><strong>ultima actualización: </strong>{{user_to_edit.updated_at}}</p>
+            </blockquote>
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}
+{% block footer%}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock %}

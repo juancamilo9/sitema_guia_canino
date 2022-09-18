@@ -2,6 +2,7 @@ from flask_app.config.mysqlconnection import connectToMySQL
 import re
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+PHONE_NUMBER_REGEX = re.compile(r'^[0-9]+$')
 from flask import jsonify
 
 
@@ -56,3 +57,72 @@ class User:
         for user in results:
             users.append(cls(user))
         return users
+
+    @classmethod
+    def update(cls, data):
+        query = "UPDATE users SET first_name=%(first_name)s, last_name=%(last_name)s, number_phone=%(number_phone)s, email=%(email)s, address=%(address)s, rol_id=%(rol)s WHERE id = %(id)s;"
+        result = connectToMySQL('guia_canino').query_db(query, data)
+        return result
+
+    @classmethod
+    def delete(cls, data):
+        query = "DELETE FROM users WHERE id=%(id)s;"
+        result = connectToMySQL('guia_canino').query_db(query, data)
+        return result
+
+    @staticmethod
+    def validate_user(data):
+        errors = {}
+        if len(data['first_name']) < 3:
+            errors['first_name'] = "Nombre debe tener 3 caracteres"
+
+        if len(data['last_name']) < 3:
+            errors['last_name'] = "Apellido debe tener 3 caracteres"
+
+            # verificar formato correcto de email, expresiones regulares
+        if not EMAIL_REGEX.match(data['email']):
+            errors['email'] = "E-mail invalido"
+
+        if not PHONE_NUMBER_REGEX.match(data['number_phone']):
+            errors['number_phone'] = "solo números para el telefono"
+
+            # password con al menos 6 caracteres
+        if len(data['password']) < 6:
+            errors['password'] = "Contraseña debe tener al menos 6 caracteres"
+
+            # password con al menos 6 caracteres
+        if data['password'] != data['confirm_password']:
+            errors['paasword1'] = "Contraseñas no coinciden"
+
+            # consultar si ya existe el correo electronico en la base de datos
+        query = "SELECT * FROM users WHERE email = %(email)s"
+        results = connectToMySQL('guia_canino').query_db(query, data)
+        if len(results) >= 1:
+            errors['email1'] = "E-mail registrado previamente"
+
+        return errors
+
+    @staticmethod
+    def validate_update(data):
+
+        errors = {}
+
+        if len(data['first_name']) < 3:
+            errors['first_name'] = "Nombre debe tener 3 caracteres"
+
+        if len(data['last_name']) < 3:
+            errors['last_name'] = "Apellido debe tener 3 caracteres"
+            # verificar formato correcto de email, expresiones regulares
+
+        if not EMAIL_REGEX.match(data['email']):
+            errors['email'] = "E-mail invalido"
+
+        if not PHONE_NUMBER_REGEX.match(data['number_phone']):
+            errors['number_phone'] = "solo números para el telefono"
+            # password con al menos 6 caracteres
+        query = "SELECT * FROM users WHERE email = %(email)s and id != %(id)s;"
+        result = connectToMySQL('guia_canino').query_db(query, data)
+        print(result)
+        if result:
+            errors['email'] = "Email registrado previamente"
+        return errors

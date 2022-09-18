@@ -1,5 +1,5 @@
+import json
 from flask import Flask, render_template, request, redirect, session, jsonify
-from flask_app.models.users import User
 from flask_app.models.roles import Rol
 from flask_app import app
 from flask_app.models.users import User
@@ -25,7 +25,6 @@ def login():
         return jsonify(message='Password incorrecto')
 
     session['user_id'] = user.id
-    print(session['user_id'])
     return jsonify(message="correcto")
 
 
@@ -35,6 +34,7 @@ def dashboard():
     if 'user_id' not in session:
         return redirect('/')
     roles = Rol.get_all()
+    print(f"Roles{roles}")
     form = {
         "id": session['user_id']
     }
@@ -69,21 +69,93 @@ def new():
 
 @app.route('/register', methods=['POST'])
 def register_user():
-    pwd = bcrypt.generate_password_hash(request.form['password'])  # Encriptamos el password del usuario
+    if request.method == 'POST':
+        errors = User.validate_user(request.form)
+        if errors:
+            return jsonify(errors)
+        else:
+            pwd = bcrypt.generate_password_hash(request.form['password'])
+            form = {
+                "first_name": request.form['first_name'],
+                "last_name": request.form['last_name'],
+                "number_phone": request.form['number_phone'],
+                "email": request.form['email'],
+                "address": request.form['address'],
+                "password": pwd,
+                "rol": request.form['rol']
+            }
+            User.save(form)
+            return jsonify({'route': '/users'})
+    return redirect('/users')
 
-    formulario = {
-        "first_name": request.form['first_name'],
-        "last_name": request.form['last_name'],
-        "number_phone": request.form['number_phone'],
-        "email": request.form['email'],
-        "address": request.form['address'],
-        "password": pwd,
-        "rol": request.form['rol']
 
+@app.route("/edit_user/<int:id>")
+def edit_user(id):
+    if 'user_id' not in session:
+        return redirect('/')
+
+    roles = Rol.get_all()
+    form_user_edit = {
+        "id": id
     }
-    # Envio los datos al modelo para que sean procesados
-    User.save(formulario)
 
+    form = {
+        "id": session['user_id']
+    }
+    user_to_edit = User.get_one(form_user_edit)
+    print(user_to_edit.first_name)
+    user = User.get_one(form)
+    return render_template("users/edit.html", user=user, roles=roles, user_to_edit=user_to_edit)
+
+
+@app.route("/update_user", methods=['POST'])
+def update_user():
+    if 'user_id' not in session:
+        return redirect('/')
+
+    errors = User.validate_update(request.form)
+    print(errors)
+    if errors:
+          return jsonify(errors)
+    else:
+        formulario = {
+            "id": request.form['id'],
+            "first_name": request.form['first_name'],
+            "last_name": request.form['last_name'],
+            "number_phone": request.form['number_phone'],
+            "email": request.form['email'],
+            "address": request.form['address'],
+            "rol": request.form['rol']
+        }
+        User.update(formulario)
+        return jsonify({'route':'/users'})
+
+
+
+@app.route("/see_user/<int:id>")
+def see_user(id):
+    if 'user_id' not in session:
+        return redirect('/')
+    roles = Rol.get_all()
+    form_user_edit = {
+        "id": id
+    }
+
+    form = {
+        "id": session['user_id']
+    }
+    user_to_edit = User.get_one(form_user_edit)
+    print(user_to_edit.first_name)
+    user = User.get_one(form)
+    return render_template("users/see.html", user=user, roles=roles, user_to_edit=user_to_edit)
+
+
+@app.route("/delete_user/<int:id>")
+def delete_user(id):
+    formulario = {
+        "id": id
+    }
+    User.delete(formulario)
     return redirect('/users')
 
 
