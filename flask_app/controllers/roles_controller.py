@@ -30,6 +30,8 @@ def new_rol():
 
 @app.route('/register_rol', methods=['POST'])
 def register_rol():
+    if 'user_id' not in session:
+        return redirect('/')
     if request.method == 'POST':
         errors = Rol.validate_rol(request.form)
         if errors:
@@ -50,6 +52,28 @@ def see_rol(id):
     }
     user = User.get_one(form)
     return render_template("roles/see.html", user=user, rol=rol)
+
+
+@app.route('/edit_rol/<int:id>')
+def edit_rol(id):
+    if 'user_id' not in session:
+        return redirect('/')
+    # get information of bd
+    rol = Rol.get_by_id({'id':id})
+    user = User.get_one({'id':session['user_id']})
+    return render_template('roles/edit.html', rol=rol, user=user)
+
+
+@app.route('/update_rol', methods=['POST'])
+def update_rol():
+    if 'user_id' not in session:
+        return redirect('/')
+    errors = Rol.validate_rol(request.form)
+    if errors:
+        return jsonify(errors)
+    else:
+        Rol.update(request.form)
+        return jsonify({'route': '/roles'})
 
 
 @app.route('/delete_rol/<int:id>')

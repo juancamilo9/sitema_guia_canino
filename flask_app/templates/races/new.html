@@ -1,0 +1,37 @@
+{%extends "base.html"%}
+{%block title%}Registrar nueva Raza{% endblock%}
+{%block content%}
+<div class="container">
+    <a href="/races" class="btn btn-dark">Volver</a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="alertMessage"></div>
+            <form method="post" id="form" action="/register_race">
+                <div class="form-group mb-3">
+                    <label for="name">Nombre de la raza</label>
+                    <input class="form-control" type="text" id="name" name="name">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="danger">Nombre de la raza</label>
+                    <select class="form-control" id="danger" name="danger">
+                        <option value="">Seleccione una opción </option>
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <input class="btn btn-primary" type="submit" value="Registrar rol">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{% block footer%}
+{% endblock %}
+{% block scripts %}
+{{super()}}
+    <script src="{{ url_for('static', filename='js/validations.js') }}"></script>
+{% endblock %}

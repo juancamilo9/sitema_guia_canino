@@ -112,9 +112,7 @@ def edit_user(id):
 def update_user():
     if 'user_id' not in session:
         return redirect('/')
-
     errors = User.validate_update(request.form)
-    print(errors)
     if errors:
           return jsonify(errors)
     else:
