@@ -1,0 +1,54 @@
+{%extends "base.html"%}
+{%block title%}Editar info Mascota {% endblock%}
+{%block content%}
+<div class="container">
+    <a href="/dogs" class="btn btn-dark">Volver</a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="alertMessage"></div>
+            <form method="post" id="form" action="/update_dog">
+                    <input type="hidden" name="id" id="id" value="{{dog.id}}">
+                    <div class="form-group mb-3">
+                        <label for="name">Nombre</label>
+                        <input class="form-control" type="text" id="name" name="name" value="{{dog.name}}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="age">Edad</label>
+                        <input class="form-control" type="text" id="age" name="age" value="{{dog.age}}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="color">Color</label>
+                        <input class="form-control" id="color" type="text" name="color" value="{{dog.color}}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="owner_id">Propietario</label>
+                        <select class="form-control" id="owner_id" name="owner_id" >
+                            {% for o in owners  %}
+                                <option value="{{o.id}}" {% if o.id == dog.owner_id %} selected {% endif %}}>{{o.first_name}} {{o.last_name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="race_id">Raza</label>
+                        <select class="form-control" id="race_id" name="race_id">
+                            {% for r in races  %}
+                                <option value="{{r.id}}" {% if r.id == dog.race_id %} selected {% endif %}}>{{r.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                <div class="form-group mb-3">
+                    <input class="btn btn-primary" type="submit" value="Actualizar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{% block footer%}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/validations.js') }}"></script>
+{% endblock %}

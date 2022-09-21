@@ -1,0 +1,51 @@
+{%extends "base.html"%}
+{%block title%}Registrar Mascota {% endblock%}
+{%block content%}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="alertMessage"></div>
+            <form method="post" id="form" action="/register_dog">
+                    <div class="form-group mb-3">
+                        <label for="name">Nombre</label>
+                        <input class="form-control" type="text" id="name" name="name">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="age">Edad</label>
+                        <input class="form-control" type="text" id="age" name="age">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="color">Color</label>
+                        <input class="form-control" id="color" type="text" name="color">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="owner_id">Propietario</label>
+                        <select class="form-control" id="owner_id" name="owner_id">
+                            {% for o in owners  %}
+                                <option value="{{o.id}}">{{o.first_name}} {{o.last_name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="race_id">Propietario</label>
+                        <select class="form-control" id="race_id" name="race_id">
+                            {% for r in races  %}
+                                <option value="{{r.id}}">{{r.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                <div class="form-group mb-3">
+                    <input class="btn btn-primary" type="submit" value="Registrar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
+{% block footer %}
+{% endblock %}
+{% block scripts %}
+{{super()}}
+<script src="{{ url_for('static', filename='js/validations.js') }}"></script>
+{% endblock %}

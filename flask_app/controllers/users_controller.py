@@ -114,7 +114,7 @@ def update_user():
         return redirect('/')
     errors = User.validate_update(request.form)
     if errors:
-          return jsonify(errors)
+        return jsonify(errors)
     else:
         formulario = {
             "id": request.form['id'],

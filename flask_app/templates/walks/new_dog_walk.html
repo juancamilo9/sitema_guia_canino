@@ -1,0 +1,41 @@
+{%extends "base.html"%}
+{%block title%}Registrar mascotas en caminatas{% endblock%}
+{%block content%}
+<div class="container">
+    <a href="/walks" class="btn btn-dark">Volver</a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="alertMessage"></div>
+            <form method="post" id="form" action="/register_dog_walk">
+                <div class="form-group mb-3">
+                    <label for="walk_id">Caminata</label>
+                    <select class="form-control" id="walk_id" name="walk_id">
+                        {% for w in walks %}
+                            <option value="{{w.id}}">{{w.date_start}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="dog_id">Caminata</label>
+                    <select class="form-control" id="dog_id" name="dog_id">
+                        {% for d in dogs %}
+                            <option value="{{d.id}}">{{d.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <input class="btn btn-primary" type="submit" value="Registrar rol">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{% block footer%}
+{% endblock %}
+{% block scripts %}
+{{super()}}
+    <script src="{{ url_for('static', filename='js/validations.js') }}"></script>
+{% endblock %}
