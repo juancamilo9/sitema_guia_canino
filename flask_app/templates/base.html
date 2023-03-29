@@ -11,28 +11,26 @@
         {%block header%}
             <div class="container mb-5">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="text text-primary">Bienvenido @{{user.first_name}}</h2>
+                    <h2 class="text text-primary">Bienvenid@ {{user.first_name}}</h2>
                     <a href="/dashboard" class="btn btn-primary">Inicio</a>
                     <div class="dropdown">
                         <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                         aria-expanded="false">
+                        aria-expanded="false">
                             Menu
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#"></a></li>
-                            <li><a class="dropdown-item" href="#"></a></li>
-                            {% if user.is_admin == 1 %}
-                            <li><a class="dropdown-item" href="/walks">Gestionar Caminatas</a></li>
-                            <li><a class="dropdown-item" href="/dogs">Gestionar Mascotas</a></li>
-                            <li><a class="dropdown-item" href="/walkers">Gestionar Paseadores</a></li>
-                            <li><a class="dropdown-item" href="/races">Gestionar Razas</a></li>
-                            <li><a class="dropdown-item" href="/roles">Gestionar Roles</a></li>
-                            <li><a class="dropdown-item" href="/users">Gestionar Usuarios</a></li>
-                            {% endif %}
+                        {% if user.is_admin == 1 %}
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
+                            <li><a class="dropdown-item" href="/walks">Gestionar caminatas</a></li>
+                            <li><a class="dropdown-item" href="/dogs">Gestionar mascotas</a></li>
+                            <li><a class="dropdown-item" href="/walkers">Gestionar paseadores</a></li>
+                            <li><a class="dropdown-item" href="/races">Gestionar razas</a></li>
+                            <li><a class="dropdown-item" href="/roles">Gestionar roles</a></li>
+                            <li><a class="dropdown-item" href="/users">Gestionar usuarios</a></li>
                         </ul>
+                        {% endif %}
                     </div>
                     <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
-              </div>
+                </div>
             </div>
         {% endblock %}
     </div>

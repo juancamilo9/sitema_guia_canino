@@ -23,6 +23,7 @@ class Dog:
         for d in result:
             dogs.append(cls(d))
         return dogs
+    
 
     @classmethod
     def get_by_id(cls, data):
